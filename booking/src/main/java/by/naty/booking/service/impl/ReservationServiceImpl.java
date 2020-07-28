@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
+    private static final String UNABLE_TO_FIND_BY_ID = "Unable to find resource with requested id=%d !";
+
     private final ReservationRepository reservationRepository;
     private final ReservationMapper reservationMapper;
 
@@ -40,7 +42,7 @@ public class ReservationServiceImpl implements ReservationService {
     public ReservationDto findById(Long id) {
         return reservationMapper.toReservationDto(reservationRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        String.format("Unable to find resource with requested id=%d", id))));
+                        String.format(UNABLE_TO_FIND_BY_ID, id))));
     }
 
     @Override
@@ -49,6 +51,16 @@ public class ReservationServiceImpl implements ReservationService {
         List<Reservation> reservationOfUserWithCurrentId = reservationList
                 .stream()
                 .filter(reservation -> reservation.getUserId().equals(userId))
+                .collect(Collectors.toList());
+        return reservationMapper.toReservationDtoList(reservationOfUserWithCurrentId);
+    }
+
+    @Override
+    public List<ReservationDto> findAllByIdRoom (Long roomId){
+        List<Reservation> reservationList = reservationRepository.findAll();
+        List<Reservation> reservationOfUserWithCurrentId = reservationList
+                .stream()
+                .filter(reservation -> reservation.getRoomId().equals(roomId))
                 .collect(Collectors.toList());
         return reservationMapper.toReservationDtoList(reservationOfUserWithCurrentId);
     }

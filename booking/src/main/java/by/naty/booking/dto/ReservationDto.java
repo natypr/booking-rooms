@@ -1,27 +1,32 @@
 package by.naty.booking.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 public class ReservationDto {
 
     private Long id;
+    @JsonProperty("room_id")
     private Long roomId;
+    @JsonProperty("user_id")
     private Long userId;
     private String name;
     private String description;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime dateStart;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss")
-    private LocalDateTime dateEnd;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonProperty("date_start")
+    private Date dateStart;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
+    @JsonProperty("date_end")
+    private Date dateEnd;
 
     public ReservationDto() {
     }
 
     public ReservationDto(Long id, Long roomId, Long userId, String name,
-                          LocalDateTime dateStart, LocalDateTime dateEnd) {
+                          Date dateStart, Date dateEnd) {
         this.id = id;
         this.roomId = roomId;
         this.userId = userId;
@@ -31,7 +36,7 @@ public class ReservationDto {
     }
 
     public ReservationDto(Long id, Long roomId, Long userId, String name,
-                          String description, LocalDateTime dateStart, LocalDateTime dateEnd) {
+                          String description, Date dateStart, Date dateEnd) {
         this.id = id;
         this.roomId = roomId;
         this.userId = userId;
@@ -81,19 +86,19 @@ public class ReservationDto {
         this.description = description;
     }
 
-    public LocalDateTime getDateStart() {
+    public Date getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(LocalDateTime dateStart) {
+    public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
 
-    public LocalDateTime getDateEnd() {
+    public Date getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(LocalDateTime dateEnd) {
+    public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
 

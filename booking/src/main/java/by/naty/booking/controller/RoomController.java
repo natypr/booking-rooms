@@ -3,10 +3,12 @@ package by.naty.booking.controller;
 import by.naty.booking.dto.RoomDto;
 import by.naty.booking.service.RoomService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -44,6 +46,13 @@ public class RoomController {
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         roomService.delete(id);
-        return ResponseEntity.ok("Successfully delete");
+        return ResponseEntity.ok("Successfully deleted");
+    }
+
+    @GetMapping("/d")
+    public ResponseEntity<List<RoomDto>> findAvailableRooms(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") Date start,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") Date end) {
+        return new ResponseEntity<>(roomService.findAvailableRooms(start, end), HttpStatus.OK);
     }
 }

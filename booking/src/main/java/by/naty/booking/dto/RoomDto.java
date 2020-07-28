@@ -1,6 +1,7 @@
 package by.naty.booking.dto;
 
 import by.naty.booking.model.RoomType;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Objects;
 
@@ -8,6 +9,7 @@ public class RoomDto {
 
     private Long id;
     private String name;
+    @JsonProperty("room_type")
     private RoomType roomType;
     private String location;
 

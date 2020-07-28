@@ -1,7 +1,7 @@
 package by.naty.booking.model;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.Objects;
 
 @Entity
@@ -25,17 +25,15 @@ public class Reservation {
     private String description;
 
     @Column(name = "date_start")
-    //@Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime dateStart;
+    private Date dateStart;
 
     @Column(name = "date_end")
-    //@Temporal(TemporalType.TIMESTAMP)
-    private LocalDateTime dateEnd;
+    private Date dateEnd;
 
     public Reservation() {
     }
 
-    public Reservation(Long roomId, Long userId, String name, LocalDateTime dateStart, LocalDateTime dateEnd) {
+    public Reservation(Long roomId, Long userId, String name, Date dateStart, Date dateEnd) {
         this.roomId = roomId;
         this.userId = userId;
         this.name = name;
@@ -43,7 +41,7 @@ public class Reservation {
         this.dateEnd = dateEnd;
     }
 
-    public Reservation(Long roomId, Long userId, String name, String description, LocalDateTime dateStart, LocalDateTime dateEnd) {
+    public Reservation(Long roomId, Long userId, String name, String description, Date dateStart, Date dateEnd) {
         this.roomId = roomId;
         this.userId = userId;
         this.name = name;
@@ -92,19 +90,19 @@ public class Reservation {
         this.description = description;
     }
 
-    public LocalDateTime getDateStart() {
+    public Date getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(LocalDateTime dateStart) {
+    public void setDateStart(Date dateStart) {
         this.dateStart = dateStart;
     }
 
-    public LocalDateTime getDateEnd() {
+    public Date getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(LocalDateTime dateEnd) {
+    public void setDateEnd(Date dateEnd) {
         this.dateEnd = dateEnd;
     }
 

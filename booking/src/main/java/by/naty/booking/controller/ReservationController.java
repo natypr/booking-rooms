@@ -37,14 +37,19 @@ public class ReservationController {
         return new ResponseEntity<>(reservationService.findById(id), HttpStatus.OK);
     }
 
-    @GetMapping("/user/{id}")
+    @GetMapping("/user/{userId}")
     public ResponseEntity<List<ReservationDto>> findAllByIdUser(@PathVariable Long userId) {
         return new ResponseEntity<>(reservationService.findAllByIdUser(userId), HttpStatus.OK);
+    }
+
+    @GetMapping("/room/{roomId}")
+    public ResponseEntity<List<ReservationDto>> findAllByIdRoom(@PathVariable Long roomId) {
+        return new ResponseEntity<>(reservationService.findAllByIdRoom(roomId), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable Long id) {
         reservationService.delete(id);
-        return ResponseEntity.ok("Successfully delete");
+        return ResponseEntity.ok("Successfully deleted");
     }
 }

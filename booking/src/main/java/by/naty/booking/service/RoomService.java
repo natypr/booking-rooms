@@ -2,6 +2,7 @@ package by.naty.booking.service;
 
 import by.naty.booking.dto.RoomDto;
 
+import java.util.Date;
 import java.util.List;
 
 public interface RoomService {
@@ -16,4 +17,5 @@ public interface RoomService {
 
     void delete(Long id);
 
+    List<RoomDto> findAvailableRooms(Date dateFrom, Date dateTo);
 }
