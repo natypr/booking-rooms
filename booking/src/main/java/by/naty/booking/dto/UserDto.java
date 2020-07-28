@@ -1,23 +1,17 @@
-package by.naty.booking.model;
+package by.naty.booking.dto;
 
-import javax.persistence.*;
 import java.util.Objects;
 
-@Entity
-@Table(name = "users")
-public class User {
+public class UserDto {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "name", length = 60)
     private String name;
 
-    public User() {
+    public UserDto() {
     }
 
-    public User(String name) {
+    public UserDto(Long id, String name) {
+        this.id = id;
         this.name = name;
     }
 
@@ -41,9 +35,9 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        if (!Objects.equals(id, user.id)) return false;
-        return Objects.equals(name, user.name);
+        UserDto userDto = (UserDto) o;
+        if (!Objects.equals(id, userDto.id)) return false;
+        return Objects.equals(name, userDto.name);
     }
 
     @Override
