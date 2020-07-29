@@ -46,6 +46,11 @@ public class UserServiceImpl implements UserService {
                         String.format(UNABLE_TO_FIND_BY_ID, id))));
     }
 
+    @Override
+    public void delete(Long id) {
+        userRepository.deleteById(id);
+    }
+
     public boolean userIsAvailable(Long userId, Date dateStart, Date dateEnd) {
         //r.getDateStart() >= dateStart && r.getDateEnd() <= dateEnd (and if in interval)
         return reservationRepository.findAll()

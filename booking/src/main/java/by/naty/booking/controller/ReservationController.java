@@ -1,6 +1,5 @@
 package by.naty.booking.controller;
 
-
 import by.naty.booking.dto.ReservationDto;
 import by.naty.booking.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;

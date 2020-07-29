@@ -5,17 +5,10 @@ import by.naty.booking.dto.RoomDto;
 import java.util.Date;
 import java.util.List;
 
-public interface RoomService {
-
-    RoomDto create(RoomDto roomDto);
-
-    List<RoomDto> findAll();
-
-    RoomDto findById(Long id);
+public interface RoomService extends BaseService<RoomDto> {
 
     RoomDto update(Long id, RoomDto newRoomDto);
 
-    void delete(Long id);
-
     List<RoomDto> findAvailableRooms(Date dateFrom, Date dateTo);
+
 }

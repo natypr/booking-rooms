@@ -4,18 +4,10 @@ import by.naty.booking.dto.ReservationDto;
 
 import java.util.List;
 
-public interface ReservationService {
-
-    ReservationDto create(ReservationDto reservationDto);
-
-    List<ReservationDto> findAll();
-
-    ReservationDto findById(Long id);
+public interface ReservationService extends BaseService<ReservationDto> {
 
     List<ReservationDto> findAllByIdUser(Long userId);
 
     List<ReservationDto> findAllByIdRoom(Long roomId);
-
-    void delete(Long id);
 
 }
