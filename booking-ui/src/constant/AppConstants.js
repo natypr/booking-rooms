@@ -2,6 +2,7 @@ const apiUrl = 'http://localhost:8080';
 
 export const METHOD_POST = "POST";
 export const METHOD_GET = "GET";
+export const METHOD_DELETE = "DELETE";
 export const REDIRECT_VALUE = "follow";
 export const CONTENT_TYPE = "Content-Type";
 export const APPLICATION_JSON = "application/json";

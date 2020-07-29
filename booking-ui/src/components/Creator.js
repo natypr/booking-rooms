@@ -30,7 +30,7 @@ export default function Creator(props) {
     };
 
     return (
-        <div className="room-creator">
+        <div className="container-box">
             <h2>Create room</h2>
             <div className="fields">
                 <span>Room name</span>

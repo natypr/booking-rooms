@@ -1,10 +1,10 @@
 import {
-    ROOMS_REQUEST_STRING,
-    METHOD_GET,
-    REDIRECT_VALUE,
-    METHOD_POST,
+    APPLICATION_JSON,
     CONTENT_TYPE,
-    APPLICATION_JSON
+    METHOD_GET,
+    METHOD_POST,
+    REDIRECT_VALUE,
+    ROOMS_REQUEST_STRING
 } from "../constant/AppConstants";
 
 class RoomService {

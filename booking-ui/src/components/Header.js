@@ -6,7 +6,7 @@ import '../styles/Header.css';
 import {RoutesUI} from "../constant/RoutesUI";
 import Typography from "@material-ui/core/Typography";
 
-export default function Header(props) {
+export default function Header() {
 
     return (
         <AppBar position="static">
