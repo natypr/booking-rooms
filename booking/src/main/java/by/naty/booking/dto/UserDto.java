@@ -1,19 +1,14 @@
 package by.naty.booking.dto;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class UserDto {
 
     private Long id;
     private String name;
-
-    public UserDto() {
-    }
-
-    public UserDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private List<ReservationDto> reservations = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -31,11 +26,21 @@ public class UserDto {
         this.name = name;
     }
 
+    public List<ReservationDto> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<ReservationDto> reservations) {
+        this.reservations = reservations;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+
         UserDto userDto = (UserDto) o;
+
         if (!Objects.equals(id, userDto.id)) return false;
         return Objects.equals(name, userDto.name);
     }

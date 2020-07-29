@@ -3,7 +3,9 @@ package by.naty.booking.service.impl;
 import by.naty.booking.controller.RoomController;
 import by.naty.booking.dto.RoomDto;
 import by.naty.booking.mapper.RoomMapper;
+import by.naty.booking.model.Reservation;
 import by.naty.booking.model.Room;
+import by.naty.booking.repository.ReservationRepository;
 import by.naty.booking.repository.RoomRepository;
 import by.naty.booking.service.RoomService;
 import org.slf4j.Logger;
@@ -13,7 +15,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,13 +28,16 @@ public class RoomServiceImpl implements RoomService {
     private static final String UNABLE_TO_DELETE = "Unable to delete resource with requested id=%d !";
     private static final String NAME_EXISTS = " Room not created, name already exists ";
     private static final String CHANGED_LOCATION = " Changed location in room with id=%d and location=(%s) to new location=(%s) ";
-    private static final String NO_ROOM_WITH_ID = " No room with current id ";
 
     private final RoomRepository roomRepository;
+    private final ReservationRepository reservationRepository;
     private final RoomMapper roomMapper;
 
-    public RoomServiceImpl(RoomRepository roomRepository, RoomMapper roomMapper) {
+    public RoomServiceImpl(RoomRepository roomRepository,
+                           ReservationRepository reservationRepository,
+                           RoomMapper roomMapper) {
         this.roomRepository = roomRepository;
+        this.reservationRepository = reservationRepository;
         this.roomMapper = roomMapper;
     }
 
@@ -39,51 +45,60 @@ public class RoomServiceImpl implements RoomService {
     public RoomDto create(RoomDto roomDto) {
         String roomName = roomDto.getName();
         try {
-            return roomMapper.toRoomDto(roomRepository.save(roomMapper.toRoom(roomDto)));
+            return roomMapper.roomToRoomDto(roomRepository.save(roomMapper.roomDtoToRoom(roomDto)));
         } catch (Exception e) {
             log.error(NAME_EXISTS + roomName);
-            throw new ResponseStatusException(HttpStatus.CONFLICT,
-                    String.format(UNABLE_TO_CREATE + NAME_EXISTS, roomName));
+            throw new ResponseStatusException(HttpStatus.CONFLICT, String.format(UNABLE_TO_CREATE, roomName));
         }
     }
 
     @Override
     public List<RoomDto> findAll() {
-        return roomMapper.toRoomDtoList(roomRepository.findAll());
+        return roomMapper.roomListToRoomDtoList(roomRepository.findAll());
     }
 
     @Transactional
     @Override
     public RoomDto findById(Long id) {
-        return roomMapper.toRoomDto(roomRepository.findById(id)
+        return roomMapper.roomToRoomDto(roomRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        String.format(UNABLE_TO_FIND_BY_ID + NO_ROOM_WITH_ID, id))));
+                        String.format(UNABLE_TO_FIND_BY_ID, id))));
     }
 
     @Override
     public RoomDto update(Long id, RoomDto newRoomDto) {
         Room existingRoom = roomRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        String.format(UNABLE_TO_FIND_BY_ID + NO_ROOM_WITH_ID, id)));
+                        String.format(UNABLE_TO_FIND_BY_ID, id)));
         existingRoom.setLocation(newRoomDto.getLocation());
         log.info(String.format(CHANGED_LOCATION, id, existingRoom.getLocation(), newRoomDto.getLocation()));
-        return roomMapper.toRoomDto(roomRepository.save(existingRoom));
+        return roomMapper.roomToRoomDto(roomRepository.save(existingRoom));
     }
 
     @Override
     public void delete(Long id) {
         try {
-            //only if reservationService.findAllByIdRoom is empty
             roomRepository.deleteById(id);
         } catch (Exception e) {
-            log.error(NO_ROOM_WITH_ID + id);
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT,
-                    String.format(UNABLE_TO_DELETE + NO_ROOM_WITH_ID, id));
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, String.format(UNABLE_TO_DELETE, id));
         }
     }
 
     @Override
-    public List<RoomDto> findAvailableRooms(Date dateFrom, Date dateTo) {
-        return roomMapper.toRoomDtoList(roomRepository.findAvailableRoom(dateFrom, dateTo));
+    public List<RoomDto> findAvailableRooms(LocalDateTime dateFrom, LocalDateTime dateTo) {
+        return roomMapper.roomListToRoomDtoList(roomRepository.findAvailableRooms(dateFrom, dateTo));
+    }
+
+    @Override
+    public List<RoomDto> findAvailableRoomForUser(LocalDateTime dateStart, LocalDateTime dateEnd, Long userId) {
+        List<Reservation> reservations = reservationRepository.findByUserId(userId);
+        List<RoomDto> rooms = new ArrayList<>();
+        boolean userIsAvailable = reservations.stream()
+                .noneMatch(r -> (r.getDateStart().isAfter(dateStart) && r.getDateStart().isBefore(dateEnd)) ||
+                        (r.getDateEnd().isAfter(dateStart) && r.getDateEnd().isBefore(dateEnd)));
+        if (userIsAvailable) {
+            rooms.addAll(roomMapper.roomListToRoomDtoList(roomRepository.findAvailableRooms(dateStart, dateEnd)));
+        }
+        return rooms;
     }
 }

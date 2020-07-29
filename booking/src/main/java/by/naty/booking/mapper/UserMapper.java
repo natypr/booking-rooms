@@ -2,22 +2,24 @@ package by.naty.booking.mapper;
 
 import by.naty.booking.dto.UserDto;
 import by.naty.booking.model.User;
-import org.mapstruct.Mapper;
-import org.mapstruct.ReportingPolicy;
-import org.springframework.stereotype.Component;
+import org.mapstruct.*;
 
 import java.util.List;
 
-@Component
-@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, componentModel = "spring")
+@Mapper(unmappedTargetPolicy = ReportingPolicy.ERROR, componentModel = "spring", uses = {ReservationMapper.class})
 public interface UserMapper {
 
-    User toUser(UserDto userDto);
+    @Named("userDtoMapper")
+    User userDtoToUser(UserDto userDto);
 
-    UserDto toUserDto(User user);
+    @Mapping(target = "reservations", ignore = true)
+    @Named("userMapper")
+    UserDto userToUserDto(User user);
 
-    List<User> toUserList(List<UserDto> userDto);
+    @IterableMapping(qualifiedByName = "userDtoMapper")
+    List<User> userDtoListToUserList(List<UserDto> userDto);
 
-    List<UserDto> toUserDtoList(List<User> user);
+    @IterableMapping(qualifiedByName = "userMapper")
+    List<UserDto> userListToUserDtoList(List<User> user);
 
 }

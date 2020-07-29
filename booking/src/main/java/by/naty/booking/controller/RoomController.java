@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
@@ -51,8 +51,17 @@ public class RoomController {
 
     @GetMapping("/d")
     public ResponseEntity<List<RoomDto>> findAvailableRooms(
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") Date start,
-            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") Date end) {
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime start,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime end) {
         return new ResponseEntity<>(roomService.findAvailableRooms(start, end), HttpStatus.OK);
     }
+
+    @GetMapping("/{userId}/d")
+    public ResponseEntity<List<RoomDto>> findAvailableRoomForUser(
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime start,
+            @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd'T'HH:mm") LocalDateTime end,
+            @PathVariable Long userId) {
+        return new ResponseEntity<>(roomService.findAvailableRoomForUser(start, end, userId), HttpStatus.OK);
+    }
+
 }

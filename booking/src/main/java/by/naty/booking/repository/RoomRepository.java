@@ -6,26 +6,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
     @Query(value =
-            "select * from room as r " +
-                "where r.id not in " +
-                 "( select reserv.room_id from reservation as reserv " +
-                        "where (date_start >= ?1 and date_start < ?2) or (date_end > ?1 and date_end <= ?2)"
+            "select * from room as ro where ro.id not in (select reserv.room_id from reservation as reserv where " +
+                    "(?1 <= reserv.date_start and ?2 <= reserv.date_end and ?2 >= reserv.date_start) " +
+                    "or (?1 >= reserv.date_start and ?2 >= reserv.date_end and ?1 <= reserv.date_end) " +
+                    "or (?1 >= reserv.date_start and ?2 <= reserv.date_end and ?1 <= reserv.date_end and ?2 >= reserv.date_start) " +
+                    "or (?1 <= reserv.date_start and ?2 >= reserv.date_end));"
             , nativeQuery = true)
-    List<Room> findAvailableRoom(Date dateFrom, Date dateTo);
-
-    @Query(value =
-            "select * from (select * from room as r where r.id not in " +
-                    "(select reserv.room_id from reservation as reserv " +
-                        "where (date_start >= ?1 and date_start < ?2) or (date_end > ?1 and date_end <= ?2))) as roo " +
-                        "where roo.id = ?3"
-            , nativeQuery = true)
-    Room checkAvailability(LocalDateTime dateFrom, LocalDateTime dateTo, int id);
+    List<Room> findAvailableRooms(LocalDateTime dateStart, LocalDateTime dateEnd);
 
 }

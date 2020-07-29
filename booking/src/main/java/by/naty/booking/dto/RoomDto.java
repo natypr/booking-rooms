@@ -3,7 +3,8 @@ package by.naty.booking.dto;
 import by.naty.booking.model.RoomType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Objects;
+import java.util.ArrayList;
+import java.util.List;
 
 public class RoomDto {
 
@@ -12,16 +13,7 @@ public class RoomDto {
     @JsonProperty("room_type")
     private RoomType roomType;
     private String location;
-
-    public RoomDto() {
-    }
-
-    public RoomDto(Long id, String name, RoomType roomType, String location) {
-        this.id = id;
-        this.name = name;
-        this.roomType = roomType;
-        this.location = location;
-    }
+    private List<ReservationDto> reservations = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -55,6 +47,14 @@ public class RoomDto {
         this.location = location;
     }
 
+    public List<ReservationDto> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<ReservationDto> reservations) {
+        this.reservations = reservations;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -62,19 +62,18 @@ public class RoomDto {
 
         RoomDto roomDto = (RoomDto) o;
 
-        if (!Objects.equals(id, roomDto.id)) return false;
-        if (!Objects.equals(name, roomDto.name)) return false;
+        if (!id.equals(roomDto.id)) return false;
+        if (!name.equals(roomDto.name)) return false;
         if (roomType != roomDto.roomType) return false;
-
-        return Objects.equals(location, roomDto.location);
+        return location.equals(roomDto.location);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (roomType != null ? roomType.hashCode() : 0);
-        result = 31 * result + (location != null ? location.hashCode() : 0);
+        int result = id.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + roomType.hashCode();
+        result = 31 * result + location.hashCode();
         return result;
     }
 }

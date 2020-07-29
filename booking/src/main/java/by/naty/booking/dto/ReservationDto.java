@@ -3,48 +3,22 @@ package by.naty.booking.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class ReservationDto {
 
     private Long id;
-    @JsonProperty("room_id")
-    private Long roomId;
-    @JsonProperty("user_id")
-    private Long userId;
+    private RoomDto room;
+    private UserDto user;
     private String name;
     private String description;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
     @JsonProperty("date_start")
-    private Date dateStart;
+    private LocalDateTime dateStart;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm")
     @JsonProperty("date_end")
-    private Date dateEnd;
-
-    public ReservationDto() {
-    }
-
-    public ReservationDto(Long id, Long roomId, Long userId, String name,
-                          Date dateStart, Date dateEnd) {
-        this.id = id;
-        this.roomId = roomId;
-        this.userId = userId;
-        this.name = name;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-    }
-
-    public ReservationDto(Long id, Long roomId, Long userId, String name,
-                          String description, Date dateStart, Date dateEnd) {
-        this.id = id;
-        this.roomId = roomId;
-        this.userId = userId;
-        this.name = name;
-        this.description = description;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-    }
+    private LocalDateTime dateEnd;
 
     public Long getId() {
         return id;
@@ -54,20 +28,20 @@ public class ReservationDto {
         this.id = id;
     }
 
-    public Long getRoomId() {
-        return roomId;
+    public RoomDto getRoom() {
+        return room;
     }
 
-    public void setRoomId(Long roomId) {
-        this.roomId = roomId;
+    public void setRoom(RoomDto room) {
+        this.room = room;
     }
 
-    public Long getUserId() {
-        return userId;
+    public UserDto getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(UserDto user) {
+        this.user = user;
     }
 
     public String getName() {
@@ -86,19 +60,19 @@ public class ReservationDto {
         this.description = description;
     }
 
-    public Date getDateStart() {
+    public LocalDateTime getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(LocalDateTime dateStart) {
         this.dateStart = dateStart;
     }
 
-    public Date getDateEnd() {
+    public LocalDateTime getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(Date dateEnd) {
+    public void setDateEnd(LocalDateTime dateEnd) {
         this.dateEnd = dateEnd;
     }
 
@@ -110,8 +84,6 @@ public class ReservationDto {
         ReservationDto that = (ReservationDto) o;
 
         if (!Objects.equals(id, that.id)) return false;
-        if (!Objects.equals(roomId, that.roomId)) return false;
-        if (!Objects.equals(userId, that.userId)) return false;
         if (!Objects.equals(name, that.name)) return false;
         if (!Objects.equals(description, that.description)) return false;
         if (!Objects.equals(dateStart, that.dateStart)) return false;
@@ -121,8 +93,6 @@ public class ReservationDto {
     @Override
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (roomId != null ? roomId.hashCode() : 0);
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
         result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (description != null ? description.hashCode() : 0);
         result = 31 * result + (dateStart != null ? dateStart.hashCode() : 0);

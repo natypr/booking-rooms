@@ -1,8 +1,7 @@
 package by.naty.booking.model;
 
 import javax.persistence.*;
-import java.util.Date;
-import java.util.Objects;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "reservation")
@@ -11,44 +10,18 @@ public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
-    @Column(name = "room_id")
-    private Long roomId;
-
-    @Column(name = "user_id")
-    private Long userId;
-
+    @ManyToOne
+    private Room room;
+    @ManyToOne
+    private User user;
     @Column(name = "name", length = 50)
     private String name;
-
     @Column(name = "description", length = 300)
     private String description;
-
     @Column(name = "date_start")
-    private Date dateStart;
-
+    private LocalDateTime dateStart;
     @Column(name = "date_end")
-    private Date dateEnd;
-
-    public Reservation() {
-    }
-
-    public Reservation(Long roomId, Long userId, String name, Date dateStart, Date dateEnd) {
-        this.roomId = roomId;
-        this.userId = userId;
-        this.name = name;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-    }
-
-    public Reservation(Long roomId, Long userId, String name, String description, Date dateStart, Date dateEnd) {
-        this.roomId = roomId;
-        this.userId = userId;
-        this.name = name;
-        this.description = description;
-        this.dateStart = dateStart;
-        this.dateEnd = dateEnd;
-    }
+    private LocalDateTime dateEnd;
 
     public Long getId() {
         return id;
@@ -58,20 +31,20 @@ public class Reservation {
         this.id = id;
     }
 
-    public Long getRoomId() {
-        return roomId;
+    public Room getRoom() {
+        return room;
     }
 
-    public void setRoomId(Long roomId) {
-        this.roomId = roomId;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
-    public Long getUserId() {
-        return userId;
+    public User getUser() {
+        return user;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public String getName() {
@@ -90,19 +63,19 @@ public class Reservation {
         this.description = description;
     }
 
-    public Date getDateStart() {
+    public LocalDateTime getDateStart() {
         return dateStart;
     }
 
-    public void setDateStart(Date dateStart) {
+    public void setDateStart(LocalDateTime dateStart) {
         this.dateStart = dateStart;
     }
 
-    public Date getDateEnd() {
+    public LocalDateTime getDateEnd() {
         return dateEnd;
     }
 
-    public void setDateEnd(Date dateEnd) {
+    public void setDateEnd(LocalDateTime dateEnd) {
         this.dateEnd = dateEnd;
     }
 
@@ -113,24 +86,24 @@ public class Reservation {
 
         Reservation that = (Reservation) o;
 
-        if (!Objects.equals(id, that.id)) return false;
-        if (!Objects.equals(roomId, that.roomId)) return false;
-        if (!Objects.equals(userId, that.userId)) return false;
-        if (!Objects.equals(name, that.name)) return false;
-        if (!Objects.equals(description, that.description)) return false;
-        if (!Objects.equals(dateStart, that.dateStart)) return false;
-        return Objects.equals(dateEnd, that.dateEnd);
+        if (!id.equals(that.id)) return false;
+        if (!room.equals(that.room)) return false;
+        if (!user.equals(that.user)) return false;
+        if (!name.equals(that.name)) return false;
+        if (!description.equals(that.description)) return false;
+        if (!dateStart.equals(that.dateStart)) return false;
+        return dateEnd.equals(that.dateEnd);
     }
 
     @Override
     public int hashCode() {
-        int result = id != null ? id.hashCode() : 0;
-        result = 31 * result + (roomId != null ? roomId.hashCode() : 0);
-        result = 31 * result + (userId != null ? userId.hashCode() : 0);
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (description != null ? description.hashCode() : 0);
-        result = 31 * result + (dateStart != null ? dateStart.hashCode() : 0);
-        result = 31 * result + (dateEnd != null ? dateEnd.hashCode() : 0);
+        int result = id.hashCode();
+        result = 31 * result + room.hashCode();
+        result = 31 * result + user.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + description.hashCode();
+        result = 31 * result + dateStart.hashCode();
+        result = 31 * result + dateEnd.hashCode();
         return result;
     }
 }
