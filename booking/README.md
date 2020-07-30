@@ -13,7 +13,9 @@
 
 *	**DELETE**: /rooms/id - Delete room by id.
 
-*   **GET**: /rooms/d?start=2020-07-29T18:10&end=2020-07-29T18:20 - Find available rooms.
+*   **GET**: /rooms/d?start=2030-09-30T14:00&end=2030-09-30T15:30 - Find available rooms.
+
+*   **GET**: /rooms/3/d?start=2030-09-30T11:30&end=2030-09-30T15:15 - Find available rooms for specific user.
 	- - -
 	
 ### User ###
@@ -36,8 +38,12 @@
     > Example of JSON-format:
 
         {
-			"room_id": "1",
-			"user_id": "1",
+			"room": {
+				"id": 2
+			},
+			"user": {
+				"id": 1
+			},
 			"name": "Name",
 			"description": "Some description",
 			"date_start": "2020-11-29T18:10",

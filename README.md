@@ -13,4 +13,14 @@
 	- Should enable you to complete your booking early
 4. Provide the ability to do this using the UI
 
-##### Possible requests for testing rest-api with Postmen are listed in the `booking / README.md`
+#### Possible requests for testing rest-api with Postmen are listed in the `booking / README.md`
+
+### How to start
+
+- Change the following parameters in your `application.yaml` file to connect to the local db (eg. localhost, room_db, root, password)
+
+> url: jdbc:mysql://${MYSQL_DATABASE_URL}:3306/${MYSQL_DATABASE}?createDatabaseIfNotExist=true
+> username: ${MYSQL_USER}
+> password: ${MYSQL_PASSWORD}
+
+- Run application
