@@ -3,6 +3,11 @@ import {useHistory} from "react-router-dom";
 import ReservationService from "../service/ReservationService";
 import {RoutesUI} from "../constant/RoutesUI";
 import '../styles/Creator.css'
+import RoomService from "../service/RoomService";
+import Card from "@material-ui/core/Card/Card";
+import CardHeader from "@material-ui/core/CardHeader";
+import CardContent from "@material-ui/core/CardContent";
+import Typography from "@material-ui/core/Typography";
 
 export default function Reservation(props) {
     const history = useHistory();
@@ -26,6 +31,21 @@ export default function Reservation(props) {
         ReservationService.createReservation(body).then(r => history.push(RoutesUI.cabinet))
     };
 
+    const getRoomsForReservation = (start, end, userId) => {
+        RoomService.getAvailableRoomsForUser(start, end, userId).then(room => {
+            console.log(room);
+            return (
+                <Card key={room.id} className="margin-vertical">
+                    <CardHeader title={room.name}/>
+                    <CardContent>
+                        <Typography variant="body2" color="textSecondary">{room.room_type}</Typography>
+                        <Typography>{room.location}</Typography>
+                    </CardContent>
+                </Card>
+            )
+        })
+    };
+
     return (
         <div className="container-box">
             <h2>Book a room!</h2>
@@ -37,7 +57,7 @@ export default function Reservation(props) {
                 <span>Date end</span>
                 <input id="datetime" type="datetime-local" ref={dateEndRef}/>
 
-                <button>Find</button>
+                <button onClick={getRoomsForReservation(dateStartRef, dateEndRef, userIdRef)}>Find</button>
             </div>
 
             {/*<label><input type="radio" name="coffee" value="without"/>room</label>*/}

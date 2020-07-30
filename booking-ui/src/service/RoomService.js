@@ -29,6 +29,13 @@ class RoomService {
         return await response.json();
     }
 
+    async getAvailableRoomsForUser(start, end, userId) {
+        const requestOptions = await this.createRequestOptionsGet();
+        let requestString = ROOMS_REQUEST_STRING + "/" + userId + "/d?start=" + start + "&end=" + end;
+        const response = await fetch(requestString, requestOptions);
+        return await response.json();
+    }
+
     async createRoom(raw) {
         const myHeaders = new Headers();
         myHeaders.append(CONTENT_TYPE, APPLICATION_JSON);
